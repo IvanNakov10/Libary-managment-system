@@ -6,6 +6,10 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt()
 main = Blueprint('main', __name__)
 
+@main.route('/')
+def home():
+    return "Library Management System is running!"
+
 # 📌 GET all books
 @main.route('/books', methods=['GET'])
 def get_books():
