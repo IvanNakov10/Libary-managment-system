@@ -1,6 +1,7 @@
 from app import db
 
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
@@ -8,6 +9,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
 
 class Book(db.Model):
+    __tablename__ = 'books'  # Explicitly set the table name
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     author = db.Column(db.String(255), nullable=False)

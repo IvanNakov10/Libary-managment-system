@@ -14,7 +14,7 @@ def home():
 @main.route('/books', methods=['GET'])
 def get_books():
     books = Book.query.all()
-    return jsonify([{"id": b.id, "title": b.title, "author": b.author} for b in books])
+    return jsonify([{"id": b.id, "title": b.title, "author": b.author, "genre": b.genre} for b in books])
 
 # 📌 POST - Add a new book
 @main.route('/books', methods=['POST'])
