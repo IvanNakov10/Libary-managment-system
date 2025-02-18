@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask import render_template
 from app import db
 from app.models import Book, User
 from flask_bcrypt import Bcrypt
@@ -8,15 +9,22 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def home():
-    return "Library Management System is running!"
+    books = Book.query.all()
+    return render_template('index.html', books=books)
 
-# 📌 GET all books
 @main.route('/books', methods=['GET'])
 def get_books():
+    """Returns books as JSON (API)"""
     books = Book.query.all()
     return jsonify([{"id": b.id, "title": b.title, "author": b.author, "genre": b.genre} for b in books])
 
-# 📌 POST - Add a new book
+@main.route('/books_page', methods=['GET'])
+def books_page():
+    """Renders books in an HTML template"""
+    books = Book.query.all()
+    return render_template('books.html', books=books)
+
+
 @main.route('/books', methods=['POST'])
 def add_book():
     data = request.json
@@ -25,7 +33,6 @@ def add_book():
     db.session.commit()
     return jsonify({"message": "Book added successfully!"}), 201
 
-# 📌 PUT - Update a book
 @main.route('/books/<int:id>', methods=['PUT'])
 def update_book(id):
     book = Book.query.get(id)
@@ -40,7 +47,6 @@ def update_book(id):
     db.session.commit()
     return jsonify({"message": "Book updated successfully!"})
 
-# 📌 DELETE - Remove a book
 @main.route('/books/<int:id>', methods=['DELETE'])
 def delete_book(id):
     book = Book.query.get(id)
@@ -51,7 +57,6 @@ def delete_book(id):
     db.session.commit()
     return jsonify({"message": "Book deleted successfully!"})
 
-# 📌 POST - User Registration
 @main.route('/register', methods=['POST'])
 def register():
     data = request.json
@@ -62,7 +67,6 @@ def register():
     db.session.commit()
     return jsonify({"message": "User registered successfully!"}), 201
 
-# 📌 POST - User Login
 @main.route('/login', methods=['POST'])
 def login():
     data = request.json
