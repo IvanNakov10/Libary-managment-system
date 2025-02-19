@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from app.config import Config
+from flask_migrate import Migrate
 
-# Initialize database globally
 db = SQLAlchemy()
 
 def create_app():
@@ -10,8 +10,8 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
-
-    # Import and register blueprints (routes)
+    migrate = Migrate(app, db)
+    
     from app.routes import main
     app.register_blueprint(main)
 
