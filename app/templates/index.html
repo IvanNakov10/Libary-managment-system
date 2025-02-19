@@ -11,5 +11,6 @@
             <li>{{ book.title }} by {{ book.author }} ({{ book.genre }})</li>
         {% endfor %}
     </ul>
+    <a href="{{ url_for('main.logout') }}">Logout</a>
 </body>
 </html>

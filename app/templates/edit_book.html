@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Book</title>
+</head>
+<body>
+    <h2>Edit Book</h2>
+    <form method="POST">
+        <label>Title:</label>
+        <input type="text" name="title" value="{{ book.title }}" required><br><br>
+
+        <label>Author:</label>
+        <input type="text" name="author" value="{{ book.author }}" required><br><br>
+
+        <label>Genre:</label>
+        <input type="text" name="genre" value="{{ book.genre }}"><br><br>
+
+        <label>Availability (Quantity):</label>
+        <input type="number" name="availability" value="{{ book.availability }}"><br><br>
+
+        <button type="submit">Update Book</button>
+    </form>
+    <p><a href="{{ url_for('main.dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>

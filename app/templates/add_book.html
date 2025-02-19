@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+</head>
+<body>
+    <h2>Add a New Book</h2>
+    <form method="POST">
+        <label>Title:</label>
+        <input type="text" name="title" required><br><br>
+
+        <label>Author:</label>
+        <input type="text" name="author" required><br><br>
+
+        <label>Genre:</label>
+        <input type="text" name="genre"><br><br>
+
+        <label>Availability (Quantity):</label>
+        <input type="number" name="availability" value="1"><br><br>
+
+        <button type="submit">Add Book</button>
+    </form>
+    <p><a href="{{ url_for('main.dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>

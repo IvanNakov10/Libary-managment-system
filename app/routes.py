@@ -20,11 +20,9 @@ def login_required(f):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # First, ensure the user is logged in
         if 'user_id' not in session:
             flash("Please log in first", "danger")
             return redirect(url_for('main.login_page'))
-        # Then, check if the user is an admin
         if not session.get('is_admin'):
             flash("You must be an admin to access this page", "danger")
             return redirect(url_for('main.home'))
@@ -71,15 +69,6 @@ def update_book(id):
     db.session.commit()
     return jsonify({"message": "Book updated successfully!"})
 
-@main.route('/books/<int:id>', methods=['DELETE'])
-def delete_book(id):
-    book = Book.query.get(id)
-    if not book:
-        return jsonify({"error": "Book not found"}), 404
-
-    db.session.delete(book)
-    db.session.commit()
-    return jsonify({"message": "Book deleted successfully!"})
 
 @main.route('/register_page', methods=['GET', 'POST'])
 def register_page():
@@ -138,10 +127,86 @@ def login():
     return redirect(url_for('main.login_page')) 
 
 @main.route('/dashboard')
-@login_required
+@admin_required
 def dashboard():
-    return render_template('dashboard.html')
+    books = Book.query.all()
+    return render_template('dashboard.html', books=books)
+@main.route('/books/add', methods=['GET', 'POST'])
+def add_book_page():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        author = request.form.get('author')
+        genre = request.form.get('genre')
+        availability_input = request.form.get('availability')  # using availability as quantity
 
+        # Convert availability to integer
+        try:
+            availability = int(availability_input) if availability_input else 1
+        except ValueError:
+            flash("Availability must be a valid number.", "danger")
+            return redirect(url_for('main.add_book_page'))
+
+        # Validate required fields
+        if not title or not author:
+            flash("Title and author are required.", "danger")
+            return redirect(url_for('main.add_book_page'))
+        
+        new_book = Book(
+            title=title,
+            author=author,
+            genre=genre,
+            availability=availability
+        )
+        try:
+            db.session.add(new_book)
+            db.session.commit()
+            flash("Book added successfully!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash("Error adding book: " + str(e), "danger")
+        return redirect(url_for('main.dashboard'))
+
+    return render_template('add_book.html')
+
+@main.route('/books/edit/<int:id>', methods=['GET', 'POST'])
+def edit_book_page(id):
+    book = Book.query.get_or_404(id)
+    if request.method == 'POST':
+        book.title = request.form.get('title')
+        book.author = request.form.get('author')
+        book.genre = request.form.get('genre')
+        availability_input = request.form.get('availability')
+
+        try:
+            book.availability = int(availability_input) if availability_input else 1
+        except ValueError:
+            flash("Availability must be a valid number.", "danger")
+            return redirect(url_for('main.edit_book_page', id=id))
+        
+        try:
+            db.session.commit()
+            flash("Book updated successfully!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash("Error updating book: " + str(e), "danger")
+        return redirect(url_for('main.dashboard'))
+
+    return render_template('edit_book.html', book=book)
+@main.route('/books/delete/<int:id>', methods=['GET', 'POST'])
+def delete_book(id):
+    book = Book.query.get_or_404(id)
+    if request.method == 'POST':
+        try:
+            db.session.delete(book)
+            db.session.commit()
+            flash("Book deleted successfully!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash("Error deleting book: " + str(e), "danger")
+        return redirect(url_for('main.dashboard'))
+    return render_template('confirm_delete.html', book=book)
+
+    
 @main.route('/logout')
 def logout():
     session.pop('user_id', None)
