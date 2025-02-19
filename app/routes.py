@@ -1,11 +1,35 @@
 from flask import Blueprint, request, jsonify, redirect, url_for, flash, session
 from flask import render_template
 from app import db
-from app.models import Book, User
+from app.models import Book, User, AdminUser
 from flask_bcrypt import Bcrypt
+from functools import wraps
 
 bcrypt = Bcrypt()
 main = Blueprint('main', __name__)
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash("Please log in first", "danger")
+            return redirect(url_for('main.login_page'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # First, ensure the user is logged in
+        if 'user_id' not in session:
+            flash("Please log in first", "danger")
+            return redirect(url_for('main.login_page'))
+        # Then, check if the user is an admin
+        if not session.get('is_admin'):
+            flash("You must be an admin to access this page", "danger")
+            return redirect(url_for('main.home'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @main.route('/')
 def home():
@@ -102,17 +126,22 @@ def login():
         session['user_id'] = user.id 
         flash("Login successful!", "success")
         return redirect(url_for('main.home'))  
+    
+    admin = AdminUser.query.filter_by(email=email).first()
+    if admin and bcrypt.check_password_hash(admin.password_hash, password):
+        session['user_id'] = admin.id
+        session['is_admin'] = True
+        flash("Admin login successful!", "success")
+        return redirect(url_for('main.home'))
 
     flash("Invalid email or password", "danger")
     return redirect(url_for('main.login_page')) 
 
 @main.route('/dashboard')
+@login_required
 def dashboard():
-    if 'user_id' not in session:
-        flash("You must log in first!", "danger")
-        return redirect(url_for('main.login'))
-    
     return render_template('dashboard.html')
+
 @main.route('/logout')
 def logout():
     session.pop('user_id', None)

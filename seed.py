@@ -7,7 +7,7 @@ from datetime import date
 app = create_app()
 
 with app.app_context():
-    
+
     admin = AdminUser.query.filter_by(email=app.config['ADMIN_EMAIL']).first()
     if not admin:
         hashed_password = generate_password_hash(app.config['ADMIN_PASSWORD']).decode('utf-8')
@@ -42,13 +42,7 @@ with app.app_context():
         ]
         db.session.add_all(users)
 
-    # Seed Admin Users
-    if not AdminUser.query.first():
-        admin_users = [
-            AdminUser(username="admin1", email="admin1@example.com", password_hash=generate_password_hash("adminpass").decode('utf-8')),
-            AdminUser(username="admin2", email="admin2@example.com", password_hash=generate_password_hash("supersecure").decode('utf-8'))
-        ]
-        db.session.add_all(admin_users)
+    
 
     # Seed Book Loans
     user1 = User.query.filter_by(email="john@example.com").first()
