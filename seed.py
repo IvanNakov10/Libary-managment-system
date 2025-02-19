@@ -7,7 +7,23 @@ from datetime import date
 app = create_app()
 
 with app.app_context():
-    # Ensure database is migrated to the latest version
+    
+    admin = AdminUser.query.filter_by(email=app.config['ADMIN_EMAIL']).first()
+    if not admin:
+        hashed_password = generate_password_hash(app.config['ADMIN_PASSWORD']).decode('utf-8')
+        admin = AdminUser(
+            username=app.config['ADMIN_USERNAME'],
+            email=app.config['ADMIN_EMAIL'],
+            password_hash=hashed_password
+        )
+        db.session.add(admin)
+        db.session.commit()
+        print("Hard-coded admin created successfully!")
+    else:
+        print("Hard-coded admin already exists.")
+    
+
+
     upgrade()
 
     # Seed Books
@@ -57,6 +73,6 @@ with app.app_context():
         db.session.add_all(logs)
 
     db.session.commit()
-    print("✅ Database seeded successfully!")
+    print("Database seeded successfully!")
 
 
