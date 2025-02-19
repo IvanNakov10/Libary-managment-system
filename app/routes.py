@@ -9,7 +9,8 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def home():
-    return render_template('index.html')
+    books = Book.query.all()
+    return render_template('index.html', books=books)
 
 @main.route('/books', methods=['GET'])
 def get_books():
