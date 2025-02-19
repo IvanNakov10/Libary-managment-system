@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, redirect, url_for, flash, session
 from flask import render_template
 from app import db
 from app.models import Book, User
@@ -9,8 +9,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def home():
-    books = Book.query.all()
-    return render_template('index.html', books=books)
+    return render_template('index.html')
 
 @main.route('/books', methods=['GET'])
 def get_books():
@@ -57,20 +56,64 @@ def delete_book(id):
     db.session.commit()
     return jsonify({"message": "Book deleted successfully!"})
 
-@main.route('/register', methods=['POST'])
-def register():
-    data = request.json
-    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-    new_user = User(email=data['email'], password_hash=hashed_password)
+@main.route('/register_page', methods=['GET', 'POST'])
+def register_page():
+    if request.method == 'POST':
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        password = request.form.get('password')
 
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({"message": "User registered successfully!"}), 201
+        if User.query.filter_by(email=email).first():
+            flash("Email already registered!", "danger")
+            return redirect(url_for('main.register_page'))
 
-@main.route('/login', methods=['POST'])
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+            password_hash=hashed_password
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        flash("Registration successful! You can now log in.", "success")
+        return redirect(url_for('main.login_page'))
+
+
+    return render_template('register.html')
+
+
+@main.route('/login_page', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+@main.route('/login_page', methods=['POST'])
 def login():
-    data = request.json
-    user = User.query.filter_by(email=data['email']).first()
-    if user and bcrypt.check_password_hash(user.password_hash, data['password']):
-        return jsonify({"message": "Login successful!"})
-    return jsonify({"error": "Invalid email or password"}), 401
+    email = request.form.get('email')  
+    password = request.form.get('password')  
+
+    user = User.query.filter_by(email=email).first()
+
+    if user and bcrypt.check_password_hash(user.password_hash, password):
+        session['user_id'] = user.id 
+        flash("Login successful!", "success")
+        return redirect(url_for('main.home'))  
+
+    flash("Invalid email or password", "danger")
+    return redirect(url_for('main.login_page')) 
+
+@main.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        flash("You must log in first!", "danger")
+        return redirect(url_for('main.login'))
+    
+    return render_template('dashboard.html')
+@main.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash("Logged out successfully!", "success")
+    return redirect(url_for('main.login'))
