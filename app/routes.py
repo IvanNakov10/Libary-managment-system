@@ -31,8 +31,9 @@ def admin_required(f):
 
 @main.route('/')
 def home():
-    books = Book.query.all()
-    return render_template('index.html', books=books)
+    newest_books = Book.query.order_by(Book.id.desc()).limit(8).all()
+    return render_template('index.html', books=newest_books)
+
 
 
 @main.route('/books_page', methods=['GET'])

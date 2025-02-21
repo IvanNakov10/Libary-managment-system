@@ -8,19 +8,33 @@
 </head>
 <body>
     {% include 'nav.html' %}
-    <h1>Library Books</h1>
-    <ul>
-        {% for book in books %}
-            <li>
-                <strong>{{ book.title }}</strong> by {{ book.author }}  
-                <br>Genre: {{ book.genre }}
-                <br>Publisher: {{ book.publisher if book.publisher else 'N/A' }}
-                <br>Year: {{ book.year if book.year else 'N/A' }}
-                <br>Quantity: {{ book.availability }}
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
+    
+    <div class="container-fluid mt-4 pl-4 pr-4">
+        <h2 class="mb-3">Newest Books</h2>
+        <div class="row">
+          {% for book in books %}
+            <div class="col-md-3">
+              <div class="card mb-3">
+                <!-- If you have an image field or a default image -->
+                <img class="card-img-top" 
+                     src="{{ url_for('static', filename='images/' ~ (book.image_filename if book.image_filename else 'default.png')) }}"
+                     alt="{{ book.title }}">
+                <div class="card-body">
+                  <h5 class="card-title">{{ book.title }}</h5>
+                  <p class="card-text">
+                    Author: {{ book.author }}<br>
+                    Genre: {{ book.genre }}<br>
+                    Quantity: {{ book.availability }}<br>
+                    Publisher: {{ book.publisher if book.publisher else 'N/A' }}<br>
+                    Year: {{ book.year if book.year else 'N/A' }}
+                  </p>
+                 
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
 
     {% include 'footer.html' %}
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
