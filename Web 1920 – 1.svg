@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1419" viewBox="0 0 1920 1419">
+  <defs>
+    <clipPath id="clip-Web_1920_1">
+      <rect width="1920" height="1419"/>
+    </clipPath>
+  </defs>
+  <g id="Web_1920_1" data-name="Web 1920 – 1" clip-path="url(#clip-Web_1920_1)">
+    <rect width="1920" height="1419" fill="#fff"/>
+    <g id="Rectangle_1" data-name="Rectangle 1" transform="translate(0 -3)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="1920" height="131" stroke="none"/>
+      <rect x="0.5" y="0.5" width="1919" height="130" fill="none"/>
+    </g>
+    <g id="Rectangle_2" data-name="Rectangle 2" transform="translate(108 380)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="577" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="576" fill="none"/>
+    </g>
+    <g id="Rectangle_3" data-name="Rectangle 3" transform="translate(108 380)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="390" height="646" stroke="none"/>
+      <rect x="0.5" y="0.5" width="389" height="645" fill="none"/>
+    </g>
+    <g id="Rectangle_4" data-name="Rectangle 4" transform="translate(108 380)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="278" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="277" fill="none"/>
+    </g>
+    <text id="IMG" transform="translate(168 458)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">IMG</tspan></text>
+    <text id="title" transform="translate(168 696)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">title</tspan></text>
+    <text id="des" transform="translate(168 775)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">des</tspan></text>
+    <text id="author" transform="translate(174 750)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">author</tspan></text>
+    <text id="genre" transform="translate(168 821)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">genre</tspan></text>
+    <text id="quantity" transform="translate(146 867)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">quantity</tspan></text>
+    <g id="Rectangle_5" data-name="Rectangle 5" transform="translate(295 957)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="190" height="60" stroke="none"/>
+      <rect x="0.5" y="0.5" width="189" height="59" fill="none"/>
+    </g>
+    <text id="borrow" transform="translate(309 979)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">borrow</tspan></text>
+    <g id="Rectangle_6" data-name="Rectangle 6" transform="translate(120 944)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="133" height="70" stroke="none"/>
+      <rect x="0.5" y="0.5" width="132" height="69" fill="none"/>
+    </g>
+    <text id="open_book_page" data-name="open book page" transform="translate(168 936)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">open </tspan><tspan x="0" y="49">book </tspan><tspan x="0" y="76">page</tspan></text>
+    <g id="Rectangle_7" data-name="Rectangle 7" transform="translate(555 381)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="577" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="576" fill="none"/>
+    </g>
+    <g id="Rectangle_8" data-name="Rectangle 8" transform="translate(555 381)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="390" height="646" stroke="none"/>
+      <rect x="0.5" y="0.5" width="389" height="645" fill="none"/>
+    </g>
+    <g id="Rectangle_9" data-name="Rectangle 9" transform="translate(555 381)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="278" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="277" fill="none"/>
+    </g>
+    <text id="IMG-2" data-name="IMG" transform="translate(615 459)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">IMG</tspan></text>
+    <text id="title-2" data-name="title" transform="translate(615 697)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">title</tspan></text>
+    <text id="des-2" data-name="des" transform="translate(615 776)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">des</tspan></text>
+    <text id="author-2" data-name="author" transform="translate(621 751)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">author</tspan></text>
+    <text id="genre-2" data-name="genre" transform="translate(615 822)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">genre</tspan></text>
+    <text id="quantity-2" data-name="quantity" transform="translate(593 868)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">quantity</tspan></text>
+    <g id="Rectangle_10" data-name="Rectangle 10" transform="translate(742 958)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="190" height="60" stroke="none"/>
+      <rect x="0.5" y="0.5" width="189" height="59" fill="none"/>
+    </g>
+    <text id="borrow-2" data-name="borrow" transform="translate(756 980)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">borrow</tspan></text>
+    <g id="Rectangle_11" data-name="Rectangle 11" transform="translate(567 945)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="133" height="70" stroke="none"/>
+      <rect x="0.5" y="0.5" width="132" height="69" fill="none"/>
+    </g>
+    <text id="open_book_page-2" data-name="open book page" transform="translate(615 937)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">open </tspan><tspan x="0" y="49">book </tspan><tspan x="0" y="76">page</tspan></text>
+    <g id="Rectangle_12" data-name="Rectangle 12" transform="translate(976 381)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="577" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="576" fill="none"/>
+    </g>
+    <g id="Rectangle_13" data-name="Rectangle 13" transform="translate(976 381)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="390" height="646" stroke="none"/>
+      <rect x="0.5" y="0.5" width="389" height="645" fill="none"/>
+    </g>
+    <g id="Rectangle_14" data-name="Rectangle 14" transform="translate(976 381)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="278" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="277" fill="none"/>
+    </g>
+    <text id="IMG-3" data-name="IMG" transform="translate(1036 459)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">IMG</tspan></text>
+    <text id="title-3" data-name="title" transform="translate(1036 697)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">title</tspan></text>
+    <text id="des-3" data-name="des" transform="translate(1036 776)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">des</tspan></text>
+    <text id="author-3" data-name="author" transform="translate(1042 751)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">author</tspan></text>
+    <text id="genre-3" data-name="genre" transform="translate(1036 822)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">genre</tspan></text>
+    <text id="quantity-3" data-name="quantity" transform="translate(1014 868)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">quantity</tspan></text>
+    <g id="Rectangle_15" data-name="Rectangle 15" transform="translate(1163 958)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="190" height="60" stroke="none"/>
+      <rect x="0.5" y="0.5" width="189" height="59" fill="none"/>
+    </g>
+    <text id="borrow-3" data-name="borrow" transform="translate(1177 980)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">borrow</tspan></text>
+    <g id="Rectangle_16" data-name="Rectangle 16" transform="translate(988 945)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="133" height="70" stroke="none"/>
+      <rect x="0.5" y="0.5" width="132" height="69" fill="none"/>
+    </g>
+    <text id="open_book_page-3" data-name="open book page" transform="translate(1036 937)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">open </tspan><tspan x="0" y="49">book </tspan><tspan x="0" y="76">page</tspan></text>
+    <g id="Rectangle_17" data-name="Rectangle 17" transform="translate(1423 382)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="577" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="576" fill="none"/>
+    </g>
+    <g id="Rectangle_18" data-name="Rectangle 18" transform="translate(1423 382)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="390" height="646" stroke="none"/>
+      <rect x="0.5" y="0.5" width="389" height="645" fill="none"/>
+    </g>
+    <g id="Rectangle_19" data-name="Rectangle 19" transform="translate(1423 382)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="382" height="278" stroke="none"/>
+      <rect x="0.5" y="0.5" width="381" height="277" fill="none"/>
+    </g>
+    <text id="IMG-4" data-name="IMG" transform="translate(1483 460)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">IMG</tspan></text>
+    <text id="title-4" data-name="title" transform="translate(1483 698)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">title</tspan></text>
+    <text id="des-4" data-name="des" transform="translate(1483 777)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">des</tspan></text>
+    <text id="author-4" data-name="author" transform="translate(1489 752)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">author</tspan></text>
+    <text id="genre-4" data-name="genre" transform="translate(1483 823)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">genre</tspan></text>
+    <text id="quantity-4" data-name="quantity" transform="translate(1461 869)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">quantity</tspan></text>
+    <g id="Rectangle_20" data-name="Rectangle 20" transform="translate(1610 959)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="190" height="60" stroke="none"/>
+      <rect x="0.5" y="0.5" width="189" height="59" fill="none"/>
+    </g>
+    <text id="borrow-4" data-name="borrow" transform="translate(1624 981)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">borrow</tspan></text>
+    <g id="Rectangle_21" data-name="Rectangle 21" transform="translate(1435 946)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="133" height="70" stroke="none"/>
+      <rect x="0.5" y="0.5" width="132" height="69" fill="none"/>
+    </g>
+    <text id="open_book_page-4" data-name="open book page" transform="translate(1483 938)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">open </tspan><tspan x="0" y="49">book </tspan><tspan x="0" y="76">page</tspan></text>
+    <text id="nakov_libary" data-name="nakov libary" transform="translate(28 35)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">nakov libary</tspan></text>
+    <text id="login_logout" data-name="login/logout" transform="translate(1777 49)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">login/logout</tspan></text>
+    <text id="if_logged_in_user_name_when_clicked_show_user_dashboard" data-name="if logged in user name
+when clicked show user dashboard" transform="translate(1528 49)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">if logged in user name</tspan><tspan x="0" y="49">when clicked show user </tspan><tspan x="0" y="76">dashboard</tspan></text>
+    <text id="top_rented_books" data-name="top rented books" transform="translate(51 171)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">top rented books</tspan></text>
+    <g id="Rectangle_22" data-name="Rectangle 22" transform="translate(0 1175)" fill="#fff" stroke="#707070" stroke-width="1">
+      <rect width="1920" height="246" stroke="none"/>
+      <rect x="0.5" y="0.5" width="1919" height="245" fill="none"/>
+    </g>
+    <text id="footer" transform="translate(474 1225)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">footer</tspan></text>
+    <text id="All_books_" data-name="All books
+" transform="translate(315 38)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">All books</tspan><tspan x="0" y="49"></tspan></text>
+    <text id="if_admin_logged_in_show_admin_dashboard_" data-name="if admin logged in show admin 
+dashboard
+" transform="translate(1380 9)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">if admin </tspan><tspan x="0" y="49">logged in </tspan><tspan x="0" y="76">show admin </tspan><tspan x="0" y="103">dashboard</tspan><tspan x="0" y="130"></tspan></text>
+    <text id="Home_" data-name="Home
+" transform="translate(198 38)" fill="#707070" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="22">Home</tspan><tspan x="0" y="49"></tspan></text>
+  </g>
+</svg>
