@@ -19,6 +19,14 @@
         <label>Availability (Quantity):</label>
         <input type="number" name="availability" value="1"><br><br>
 
+        <!-- NEW Fields -->
+        <label>Publisher:</label>
+        <input type="text" name="publisher"><br><br>
+
+        <label>Year of Publication:</label>
+        <input type="number" name="year"><br><br>
+        <!-- END NEW Fields -->
+
         <button type="submit">Add Book</button>
     </form>
     <p><a href="{{ url_for('main.dashboard') }}">Back to Dashboard</a></p>

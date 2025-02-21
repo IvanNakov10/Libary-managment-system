@@ -29,8 +29,9 @@ with app.app_context():
     # Seed Books
     if not Book.query.first():
         books = [
-            Book(title="The Subtle Art of Not Giving a F*ck", author="Mark Manson", genre="Self-help"),
-            Book(title="Atomic habits", author="James Clear", genre="Self-help")
+           Book(title="The Subtle Art of Not Giving a F*ck", author="Mark Manson",
+                 genre="Self-help", availability=3, publisher="Harper", year=2016),
+            Book(title="a", author="a", genre="a", availability=2, publisher="Test", year=2020)
         ]
         db.session.add_all(books)
 

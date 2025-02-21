@@ -22,6 +22,8 @@ class Book(db.Model):
     author = db.Column(db.String(255), nullable=False)
     genre = db.Column(db.String(100))
     availability = db.Column(db.Integer, default=1)
+    publisher = db.Column(db.String(255)) 
+    year = db.Column(db.Integer)     
 
 class BookLoan(db.Model):
     __tablename__ = 'book_loans'

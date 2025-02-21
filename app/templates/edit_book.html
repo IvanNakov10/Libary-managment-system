@@ -19,6 +19,14 @@
         <label>Availability (Quantity):</label>
         <input type="number" name="availability" value="{{ book.availability }}"><br><br>
 
+        <!-- NEW Fields -->
+        <label>Publisher:</label>
+        <input type="text" name="publisher" value="{{ book.publisher }}"><br><br>
+
+        <label>Year of Publication:</label>
+        <input type="number" name="year" value="{{ book.year if book.year else '' }}"><br><br>
+        <!-- END NEW Fields -->
+
         <button type="submit">Update Book</button>
     </form>
     <p><a href="{{ url_for('main.dashboard') }}">Back to Dashboard</a></p>
