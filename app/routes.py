@@ -31,7 +31,7 @@ def admin_required(f):
 
 @main.route('/')
 def home():
-    newest_books = Book.query.order_by(Book.id.desc()).limit(8).all()
+    newest_books = Book.query.order_by(Book.id.desc()).limit(3).all()
     return render_template('index.html', books=newest_books)
 
 
@@ -206,3 +206,16 @@ def delete_book(id):
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('main.login'))
+
+
+@main.route('/book/<int:book_id>')
+def book_detail(book_id):
+    book = Book.query.get_or_404(book_id)
+    latest_book = Book.query.order_by(Book.id.desc()).first()
+    user_name = "John Doe"  # Example user name or get from session
+    return render_template(
+        'book_detail.html',
+        book=book,
+        latest_book=latest_book,
+        user_name=user_name
+    )

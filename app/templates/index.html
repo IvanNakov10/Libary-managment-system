@@ -9,15 +9,15 @@
 <body>
     {% include 'nav.html' %}
     
-    <div class="container-fluid mt-4 pl-4 pr-4">
+    <div class="container px-2 mt-4">
         <h2 class="mb-3">Newest Books</h2>
         <div class="row">
           {% for book in books %}
-            <div class="col-md-3">
-              <div class="card mb-3">
-                <!-- If you have an image field or a default image -->
+            <div class="col-md-4">
+              <div class="card mb-4">
+                <!-- Book Image (default or from book.image_filename) -->
                 <img class="card-img-top" 
-                     src="{{ url_for('static', filename='images/' ~ (book.image_filename if book.image_filename else 'default.png')) }}"
+                     src="{{ url_for('static', filename='images/product-not-found.png') }}"
                      alt="{{ book.title }}">
                 <div class="card-body">
                   <h5 class="card-title">{{ book.title }}</h5>
@@ -28,7 +28,10 @@
                     Publisher: {{ book.publisher if book.publisher else 'N/A' }}<br>
                     Year: {{ book.year if book.year else 'N/A' }}
                   </p>
-                 
+                  <!-- Button to go to Book Detail Page -->
+                  <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-primary">
+                    View Book
+                  </a>
                 </div>
               </div>
             </div>

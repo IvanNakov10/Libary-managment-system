@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+</head>
+<body>
+    {% include 'nav.html' %}
+
+    <div class="container mt-4">
+        <div class="row">
+          <!-- Left Column: Large Book Image -->
+          <div class="col-md-3 text-center mb-4">
+            <!-- Always use product-not-found.png -->
+            <img 
+              src="{{ url_for('static', filename='images/product-not-found.png') }}"
+              alt="Book Image"
+              class="img-fluid"
+              style="max-height: 450px; object-fit: cover;"
+            >
+          </div>
+    
+          <!-- Center Column: Book Details -->
+          <div class="col-md-4">
+            <h2>{{ book.title }}</h2>
+            <p><strong>Author:</strong> {{ book.author }}</p>
+            <p><strong>Genre:</strong> {{ book.genre }}</p>
+            <p><strong>Year:</strong> {{ book.year if book.year else 'N/A' }}</p>
+            <p><strong>Publisher:</strong> {{ book.publisher if book.publisher else 'N/A' }}</p>
+            <p><strong>Description:</strong><br>
+              {{ book.description if book.description else 'No description available.' }}
+            </p>
+            <p><strong>Availability:</strong>
+              {% if book.availability > 0 %}
+                Only {{ book.availability }} available left!
+              {% else %}
+                Not available
+              {% endif %}
+            </p>
+            
+            <!-- Borrow Button (no logic behind it) -->
+            {% if book.availability > 0 %}
+              <button class="btn btn-primary">Borrow</button>
+            {% else %}
+              <button class="btn btn-secondary" disabled>Not Available</button>
+            {% endif %}
+          </div>
+          <div class="col-md-1"></div>
+          <!-- Right Column: Latest Book -->
+          <div class="col-md-4">
+            <h4>Latest Book</h4>
+            <div class="border p-3 text-center">
+              <!-- Always use product-not-found.png here too -->
+              <img 
+                src="{{ url_for('static', filename='images/product-not-found.png') }}"
+                alt="Latest Book Image"
+                class="img-fluid mb-2"
+                style="max-height: 200px; object-fit: cover;"
+              >
+              <h5>{{ latest_book.title }}</h5>
+              <p>{{ latest_book.genre }}<br>
+                 {{ latest_book.author }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    {% include 'footer.html' %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
