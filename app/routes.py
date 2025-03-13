@@ -223,43 +223,50 @@ def book_detail(book_id):
         user_name=user_name
     )
 
-@main.route('/books/borrow/<int:book_id>', methods=['POST', 'GET'])
+@main.route('/books/borrow/<int:book_id>', methods=['POST'])
 def borrow_book(book_id):
-    """Borrow a book if available."""
-    # 1) Check if user is logged in
+    if request.method == 'GET':
+        # Optionally, you can redirect or display a confirmation page
+        return redirect(url_for('main.home'))
+
+    # Check if user is logged in
     if 'user_id' not in session:
         flash("You must be logged in to borrow books.", "danger")
         return redirect(url_for('main.login_page'))
-
-    # 2) Get the book
+    
+    # Get the book by id
     book = Book.query.get_or_404(book_id)
-
-    # 3) Check availability
+    
+    # Check if the book is available
     if book.availability <= 0:
         flash("No copies left to borrow.", "danger")
-        return redirect(url_for('main.home'))  # or wherever you want to go
-
-    # 4) Create a new BookLoan record
+        return redirect(url_for('main.home'))
+    
+    # Set the borrow date to today
+    borrow_date = date.today()
+    # Set the expected return date to one week from today
+    expected_return_date = borrow_date + timedelta(days=7)
+    
+    # Create a new BookLoan record
     new_loan = BookLoan(
         book_id=book.id,
         user_id=session['user_id'],
-        borrow_date=date.today(),
+        borrow_date=borrow_date,
+        return_date=expected_return_date,
         returned=False
     )
     db.session.add(new_loan)
-
-    # 5) Decrement availability
+    
+    # Decrement the book's availability
     book.availability -= 1
-
-    # 6) Commit
+    
     try:
         db.session.commit()
-        flash("Book borrowed successfully!", "success")
+        flash("Book borrowed successfully! Please return it by " + expected_return_date.strftime('%Y-%m-%d'), "success")
     except Exception as e:
         db.session.rollback()
-        flash(f"Error borrowing book: {e}", "danger")
-
-    # 7) Redirect somewhere (home, index, dashboard)
+        flash("Error borrowing book: " + str(e), "danger")
+    
     return redirect(url_for('main.home'))
 
 @main.route('/user_dashboard')
