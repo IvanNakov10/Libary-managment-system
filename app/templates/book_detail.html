@@ -43,7 +43,10 @@
             
             <!-- Borrow Button (no logic behind it) -->
             {% if book.availability > 0 %}
-              <button class="btn btn-primary">Borrow</button>
+              <a class="btn btn-primary" 
+                href="{{ url_for('main.borrow_book', book_id=book.id) }}">
+                Borrow
+              </a>
             {% else %}
               <button class="btn btn-secondary" disabled>Not Available</button>
             {% endif %}

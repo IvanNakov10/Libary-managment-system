@@ -1,6 +1,7 @@
 from app import db
 from flask_bcrypt import generate_password_hash
 
+from datetime import date
 
 
 
@@ -25,14 +26,6 @@ class Book(db.Model):
     publisher = db.Column(db.String(255)) 
     year = db.Column(db.Integer)     
 
-class BookLoan(db.Model):
-    __tablename__ = 'book_loans'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    book_id = db.Column(db.Integer, db.ForeignKey('books.id', ondelete='CASCADE'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    borrow_date = db.Column(db.Date, nullable=False)
-    return_date = db.Column(db.Date)
-    returned = db.Column(db.Boolean, default=False)
 
 class AdminUser(db.Model):
     __tablename__ = 'admin_users'
@@ -50,3 +43,15 @@ class Log(db.Model):
     timestamp = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
 #flask db migrate -m "Added new fields"
 #flask db upgrade
+class BookLoan(db.Model):
+    __tablename__ = 'book_loans'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    borrow_date = db.Column(db.Date, default=date.today, nullable=False)
+    return_date = db.Column(db.Date, nullable=True)
+    returned = db.Column(db.Boolean, default=False)
+
+    # relationships
+    book = db.relationship('Book', backref='loans', lazy=True)
+    user = db.relationship('User', backref='loans', lazy=True)

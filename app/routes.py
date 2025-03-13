@@ -4,6 +4,8 @@ from app import db
 from app.models import Book, User, AdminUser
 from flask_bcrypt import Bcrypt
 from functools import wraps
+from datetime import date
+from app.models import Book, BookLoan, User
 
 bcrypt = Bcrypt()
 main = Blueprint('main', __name__)
@@ -219,3 +221,42 @@ def book_detail(book_id):
         latest_book=latest_book,
         user_name=user_name
     )
+
+@main.route('/books/borrow/<int:book_id>', methods=['POST', 'GET'])
+def borrow_book(book_id):
+    """Borrow a book if available."""
+    # 1) Check if user is logged in
+    if 'user_id' not in session:
+        flash("You must be logged in to borrow books.", "danger")
+        return redirect(url_for('main.login_page'))
+
+    # 2) Get the book
+    book = Book.query.get_or_404(book_id)
+
+    # 3) Check availability
+    if book.availability <= 0:
+        flash("No copies left to borrow.", "danger")
+        return redirect(url_for('main.home'))  # or wherever you want to go
+
+    # 4) Create a new BookLoan record
+    new_loan = BookLoan(
+        book_id=book.id,
+        user_id=session['user_id'],
+        borrow_date=date.today(),
+        returned=False
+    )
+    db.session.add(new_loan)
+
+    # 5) Decrement availability
+    book.availability -= 1
+
+    # 6) Commit
+    try:
+        db.session.commit()
+        flash("Book borrowed successfully!", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error borrowing book: {e}", "danger")
+
+    # 7) Redirect somewhere (home, index, dashboard)
+    return redirect(url_for('main.home'))
