@@ -1,0 +1,56 @@
+<!-- templates/user_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% include 'nav.html' %}
+    
+    <div class="container mt-4">
+        <h2>Your Borrowed Books</h2>
+        {% if loans %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Borrow Date</th>
+                    <th>Expected Return Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.book.title }}</td>
+                    <td>{{ loan.borrow_date.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        {% if loan.return_date %}
+                            {{ loan.return_date.strftime('%Y-%m-%d') }}
+                        {% else %}
+                            Not Set
+                        {% endif %}
+                    </td>
+                    <td>
+                        <!-- Return button; ensure you have a matching route for return_book -->
+                        <form action="{{ url_for('main.return_book', loan_id=loan.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-primary">Return</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>You have not borrowed any books.</p>
+        {% endif %}
+    </div>
+    
+    {% include 'footer.html' %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

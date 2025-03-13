@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from functools import wraps
 from datetime import date
 from app.models import Book, BookLoan, User
+from datetime import date, timedelta
 
 bcrypt = Bcrypt()
 main = Blueprint('main', __name__)
@@ -260,3 +261,48 @@ def borrow_book(book_id):
 
     # 7) Redirect somewhere (home, index, dashboard)
     return redirect(url_for('main.home'))
+
+@main.route('/user_dashboard')
+@login_required
+def user_dashboard():
+    # Restrict access: Only non-admin users should see this page.
+    if session.get('is_admin'):
+        flash("Access denied for admin users.", "danger")
+        return redirect(url_for('main.home'))
+    
+    user_id = session.get('user_id')
+    # Retrieve active (not yet returned) loans for the current user.
+    loans = BookLoan.query.filter_by(user_id=user_id, returned=False).all()
+    
+    return render_template('user_dashboard.html', loans=loans)
+
+@login_required
+@main.route('/books/return/<int:loan_id>', methods=['POST'])
+def return_book(loan_id):
+    loan = BookLoan.query.get_or_404(loan_id)
+    
+    if loan.returned:
+        flash("Book is already returned.", "warning")
+        return redirect(url_for('main.user_dashboard'))
+    
+    # Mark the loan as returned and set the return date
+    loan.returned = True
+    loan.return_date = date.today()
+    
+    # Increment the book's availability using the relationship if available
+    if loan.book:
+        loan.book.availability += 1
+    else:
+        # Fallback: query the book directly if relationship isn't set
+        book = Book.query.get(loan.book_id)
+        if book:
+            book.availability += 1
+
+    try:
+        db.session.commit()
+        flash("Book returned successfully!", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash("Error returning book: " + str(e), "danger")
+    
+    return redirect(url_for('main.user_dashboard'))
