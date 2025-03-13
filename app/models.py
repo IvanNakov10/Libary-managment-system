@@ -48,10 +48,10 @@ class BookLoan(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id', ondelete='CASCADE'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    borrow_date = db.Column(db.Date, nullable=False)
+    borrow_date = db.Column(db.Date, default=date.today, nullable=False)
     return_date = db.Column(db.Date, nullable=True)
     returned = db.Column(db.Boolean, default=False)
-    
-    # Relationship to the Book model
+
+    # relationships
     book = db.relationship('Book', backref='loans', lazy=True)
     user = db.relationship('User', backref='loans', lazy=True)
