@@ -1,29 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Library Books</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+  <meta charset="UTF-8">
+  <title>All Books</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    {% include 'nav.html' %}
-    <h1>Library Books</h1>
-    <ul>
-        {% for book in books %}
-            <li>
-                <strong>{{ book.title }}</strong> by {{ book.author }}  
-                <br>Genre: {{ book.genre }}
-                <br>Publisher: {{ book.publisher if book.publisher else 'N/A' }}
-                <br>Year: {{ book.year if book.year else 'N/A' }}
-                <br>Quantity: {{ book.availability }}
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
-    {% include 'footer.html' %}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  {% include 'nav.html' %}
+  
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <!-- SIDEBAR (Filters) -->
+      <div class="col-md-3">
+        <h5>Filters</h5>
+        <form method="GET" action="{{ url_for('main.books_page') }}">
+          <!-- Genre Filter -->
+          <div class="form-group">
+            <label for="genre">Genre</label>
+            <select class="form-control" id="genre" name="genre">
+              <option value="">All</option>
+              {% for g in genres %}
+                <option value="{{ g }}" {% if genre_filter == g %}selected{% endif %}>{{ g }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <!-- Publisher Filter -->
+          <div class="form-group">
+            <label for="publisher">Publisher</label>
+            <input type="text" class="form-control" id="publisher" name="publisher"
+                   value="{{ publisher_filter if publisher_filter else '' }}"
+                   placeholder="Enter publisher...">
+          </div>
+          <!-- Year Filter -->
+          <div class="form-group">
+            <label for="year">Year</label>
+            <input type="number" class="form-control" id="year" name="year"
+                   value="{{ year_filter if year_filter else '' }}"
+                   placeholder="Enter year...">
+          </div>
+          <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </form>
+      </div>
+
+      <!-- BOOK CARDS -->
+      <div class="col-md-9">
+        <h2>All Books</h2>
+        <div class="row">
+          {% for book in books %}
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <!-- Book Image -->
+                <img class="card-img-top"
+                    src="{{ url_for('static', filename='images/product-not-found.png') }}"
+                     alt="{{ book.title }}"
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                  <h5 class="card-title">{{ book.title }}</h5>
+                  <p class="card-text">
+                    Author: {{ book.author }}<br>
+                    Genre: {{ book.genre }}<br>
+                    Quantity: {{ book.availability }}<br>
+                    Publisher: {{ book.publisher if book.publisher else 'N/A' }}<br>
+                    Year: {{ book.year if book.year else 'N/A' }}
+                  </p>
+                  <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-primary">View Book</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'footer.html' %}
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

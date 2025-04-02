@@ -7,6 +7,8 @@ from functools import wraps
 from datetime import date
 from app.models import Book, BookLoan, User
 from datetime import date, timedelta
+from app import mail
+from flask_mail import Message
 
 bcrypt = Bcrypt()
 main = Blueprint('main', __name__)
@@ -41,10 +43,38 @@ def home():
 
 @main.route('/books_page', methods=['GET'])
 def books_page():
-    """Renders books in an HTML template"""
-    books = Book.query.all()
-    return render_template('books.html', books=books)
+    # Get filter values from the query parameters
+    genre_filter = request.args.get('genre', default='', type=str)
+    publisher_filter = request.args.get('publisher', default='', type=str)
+    year_filter = request.args.get('year', default='', type=str)
 
+    # Query distinct genres (exclude NULL values)
+    genres_query = db.session.query(Book.genre).filter(Book.genre.isnot(None)).distinct().all()
+    # Convert list of tuples to a list of genre strings
+    genres = [g[0] for g in genres_query if g[0]]
+
+    # Start with all books
+    query = Book.query
+
+    # Apply filters
+    if genre_filter:
+        query = query.filter(Book.genre == genre_filter)
+    if publisher_filter:
+        query = query.filter(Book.publisher.ilike(f"%{publisher_filter}%"))
+    if year_filter:
+        try:
+            query = query.filter(Book.year == int(year_filter))
+        except ValueError:
+            pass
+
+    books = query.all()
+
+    return render_template('books.html',
+                           books=books,
+                           genres=genres,
+                           genre_filter=genre_filter,
+                           publisher_filter=publisher_filter,
+                           year_filter=year_filter)
 
 @main.route('/register_page', methods=['GET', 'POST'])
 def register_page():
@@ -286,6 +316,8 @@ def user_dashboard():
 @login_required
 @main.route('/books/return/<int:loan_id>', methods=['POST'])
 def return_book(loan_id):
+
+
     loan = BookLoan.query.get_or_404(loan_id)
     
     if loan.returned:
@@ -313,3 +345,16 @@ def return_book(loan_id):
         flash("Error returning book: " + str(e), "danger")
     
     return redirect(url_for('main.user_dashboard'))
+
+
+@main.route('/send-mail')
+def send_mail():
+    try:
+        msg = Message("Notification from Library System",
+                      recipients=["nakovkivshanovgpt@gmail.com"])
+        msg.body = "Hello,\n\nThis is a test email notification from your Library Management System."
+        mail.send(msg)
+        flash("Email sent successfully!", "success")
+    except Exception as e:
+        flash("Error sending email: " + str(e), "danger")
+    return redirect(url_for('main.home'))
