@@ -47,6 +47,7 @@ def books_page():
     genre_filter = request.args.get('genre', default='', type=str)
     publisher_filter = request.args.get('publisher', default='', type=str)
     year_filter = request.args.get('year', default='', type=str)
+    sort_order = request.args.get('sort', default='', type=str)  # Get the sorting option
 
     # Query distinct genres (exclude NULL values)
     genres_query = db.session.query(Book.genre).filter(Book.genre.isnot(None)).distinct().all()
@@ -67,6 +68,10 @@ def books_page():
         except ValueError:
             pass
 
+    # Sorting logic
+    if sort_order == 'availability':
+        query = query.order_by(Book.availability.desc())  # Sort by availability (descending)
+
     books = query.all()
 
     return render_template('books.html',
@@ -74,7 +79,8 @@ def books_page():
                            genres=genres,
                            genre_filter=genre_filter,
                            publisher_filter=publisher_filter,
-                           year_filter=year_filter)
+                           year_filter=year_filter,
+                           sort_order=sort_order) 
 
 @main.route('/register_page', methods=['GET', 'POST'])
 def register_page():

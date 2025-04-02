@@ -38,6 +38,14 @@
                    value="{{ year_filter if year_filter else '' }}"
                    placeholder="Enter year...">
           </div>
+           <!-- Sort by Availability -->
+        <div class="form-group">
+            <label for="sort">Sort by</label>
+            <select class="form-control" id="sort" name="sort">
+            <option value="">None</option>
+            <option value="availability" {% if sort_order == 'availability' %}selected{% endif %}>Availability</option>
+        </select>
+      </div>
           <button type="submit" class="btn btn-primary">Apply Filters</button>
         </form>
       </div>
