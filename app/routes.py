@@ -7,8 +7,7 @@ from functools import wraps
 from datetime import date
 from app.models import Book, BookLoan, User
 from datetime import date, timedelta
-from app import mail
-from flask_mail import Message
+
 
 bcrypt = Bcrypt()
 main = Blueprint('main', __name__)
@@ -82,37 +81,38 @@ def books_page():
                            year_filter=year_filter,
                            sort_order=sort_order) 
 
+
 @main.route('/register_page', methods=['GET', 'POST'])
-def register_page():
+def register():
     if request.method == 'POST':
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        email = request.form.get('email')
-        phone = request.form.get('phone')
-        password = request.form.get('password')
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        phone = request.form['phone']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
 
-        if User.query.filter_by(email=email).first():
-            flash("Email already registered!", "danger")
-            return redirect(url_for('main.register_page'))
+        # Check if passwords match
+        if password != confirm_password:
+            flash("Passwords do not match!", "danger")
+            return redirect(url_for('main.register'))
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            phone=phone,
-            password_hash=hashed_password
-        )
-        db.session.add(new_user)
+        # Hash the password using bcrypt
+        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        # Create user and save to database
+        user = User(first_name=first_name, last_name=last_name, email=email, 
+                    phone=phone, password_hash=password_hash)
+        db.session.add(user)
         db.session.commit()
-        flash("Registration successful! You can now log in.", "success")
-        return redirect(url_for('main.login_page'))
 
+        flash("Registration successful!", "success")
+        return redirect(url_for('main.login_page'))
 
     return render_template('register.html')
 
 
-@main.route('/login_page', methods=['GET'])
+@main.route('/login_page', methods=['GET', 'POST'])
 def login_page():
     return render_template('login.html')
 
@@ -352,15 +352,3 @@ def return_book(loan_id):
     
     return redirect(url_for('main.user_dashboard'))
 
-
-@main.route('/send-mail')
-def send_mail():
-    try:
-        msg = Message("Notification from Library System",
-                      recipients=["nakovkivshanovgpt@gmail.com"])
-        msg.body = "Hello,\n\nThis is a test email notification from your Library Management System."
-        mail.send(msg)
-        flash("Email sent successfully!", "success")
-    except Exception as e:
-        flash("Error sending email: " + str(e), "danger")
-    return redirect(url_for('main.home'))
