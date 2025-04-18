@@ -33,19 +33,16 @@
         <div class="login-container bg-white">
             <h2 class="form-title">Login</h2>
             <form action="{{ url_for('main.login_page') }}" method="POST">
-                <!-- Email -->
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
                 </div>
                 
-                <!-- Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
                 </div>
 
-                <!-- Login Button -->
                 <button type="submit" class="btn btn-primary btn-login">Login</button>
             </form>
             <p class="mt-3 text-center">

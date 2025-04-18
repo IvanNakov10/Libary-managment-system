@@ -12,9 +12,7 @@
 
     <div class="container mt-4">
         <div class="row">
-          <!-- Left Column: Large Book Image -->
           <div class="col-md-3 text-center mb-4">
-            <!-- Always use product-not-found.png -->
             <img class="card-img-top img-fluid"
                 src="{{ book.image_url or url_for('static', filename='images/default.png') }}"
                 alt="{{ book.title }}"
@@ -22,7 +20,6 @@
             >
           </div>
     
-          <!-- Center Column: Book Details -->
           <div class="col-md-4">
             <h2>{{ book.title }}</h2>
             <p><strong>Author:</strong> {{ book.author }}</p>
@@ -40,7 +37,6 @@
               {% endif %}
             </p>
             
-            <!-- Borrow Button (no logic behind it) -->
             {% if book.availability > 0 %}
             <form action="{{ url_for('main.borrow_book', book_id=book.id) }}" method="POST" style="display:inline;">
               <button type="submit" class="btn btn-primary">Borrow</button>
@@ -50,7 +46,6 @@
             {% endif %} 
           </div>
           <div class="col-md-1"></div>
-          <!-- Right Column: Latest Book -->
           <div class="col-md-4">
             <h4>Latest Book</h4>
             <div class="border p-3 text-center">

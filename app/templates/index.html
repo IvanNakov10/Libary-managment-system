@@ -1,4 +1,3 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,6 @@
                     Publisher: {{ book.publisher if book.publisher else 'N/A' }}<br>
                     Year: {{ book.year if book.year else 'N/A' }}
                   </p>
-                  <!-- Button to go to Book Detail Page -->
                   <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="btn btn-primary">
                     View Book
                   </a>

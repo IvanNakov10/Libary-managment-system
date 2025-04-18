@@ -54,6 +54,5 @@ class BookLoan(db.Model):
     return_date = db.Column(db.Date, nullable=True)
     returned = db.Column(db.Boolean, default=False)
     
-    # Relationship to the Book model
     book = db.relationship('Book', backref='loans', lazy=True)
     user = db.relationship('User', backref='loans', lazy=True)
