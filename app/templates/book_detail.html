@@ -48,16 +48,25 @@
           <div class="col-md-1"></div>
           <div class="col-md-4">
             <h4>Latest Book</h4>
-            <div class="border p-3 text-center">
-              
-              <img class="card-img-top img-fluid mb-2"
-                src="{{ book.image_url or url_for('static', filename='images/default.png') }}"
-                alt="{{ book.title }}"
-                style="max-height: 200px; object-fit: cover;">
-              <h5>{{ latest_book.title }}</h5>
-              <p>{{ latest_book.genre }}<br>
-                 {{ latest_book.author }}</p>
-            </div>
+            {% if latest_book %}
+              <div class="border p-3 text-center">
+                <img class="card-img-top img-fluid mb-2"
+                     src="{{ latest_book.image_url or url_for('static', filename='images/default.png') }}"
+                     alt="{{ latest_book.title }}"
+                     style="max-height: 200px; object-fit: cover;">
+                <h5>{{ latest_book.title }}</h5>
+                <p>
+                  {{ latest_book.genre }}<br>
+                  {{ latest_book.author }}
+                </p>
+                <a href="{{ url_for('main.book_detail', book_id=latest_book.id) }}"
+                   class="btn btn-sm btn-outline-primary">
+                  View Details
+                </a>
+              </div>
+            {% else %}
+              <p class="text-muted">No other books available.</p>
+            {% endif %}
           </div>
         </div>
       </div>

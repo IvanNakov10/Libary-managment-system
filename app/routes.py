@@ -242,14 +242,13 @@ def logout():
 def book_detail(book_id):
     book = Book.query.get_or_404(book_id)
     latest_book = Book.query.order_by(Book.id.desc()).first()
-    user_name = "John Doe"  # Example user name or get from session
+    user_name = "John Doe" 
     return render_template(
         'book_detail.html',
         book=book,
         latest_book=latest_book,
         user_name=user_name
     )
-
 @main.route('/books/borrow/<int:book_id>', methods=['POST'])
 def borrow_book(book_id):
     if request.method == 'GET':
