@@ -250,40 +250,33 @@ def book_detail(book_id):
         user_name=user_name
     )
 @main.route('/books/borrow/<int:book_id>', methods=['POST'])
+@login_required
 def borrow_book(book_id):
-    if request.method == 'GET':
+    # Block admins here
+    if session.get('is_admin'):
+        flash("Admins are not allowed to borrow books.", "danger")
         return redirect(url_for('main.home'))
 
-    if 'user_id' not in session:
-        return redirect(url_for('main.login_page'))
-    
+    # (rest of your existing logic…)
     book = Book.query.get_or_404(book_id)
-    
-    if book.availability <= 0:
+    if book.availability < 1:
         flash("No copies left to borrow.", "danger")
         return redirect(url_for('main.home'))
-    
+
     borrow_date = date.today()
-    expected_return_date = borrow_date + timedelta(days=7)
-    
+    expected_return = borrow_date + timedelta(days=7)
     new_loan = BookLoan(
         book_id=book.id,
         user_id=session['user_id'],
         borrow_date=borrow_date,
-        return_date=expected_return_date,
+        return_date=expected_return,
         returned=False
     )
-    db.session.add(new_loan)
-    
     book.availability -= 1
-    
-    try:
-        db.session.commit()
-        flash("Book borrowed successfully! Please return it by " + expected_return_date.strftime('%Y-%m-%d'), "success")
-    except Exception as e:
-        db.session.rollback()
-        flash("Error borrowing book: " + str(e), "danger")
-    
+    db.session.add(new_loan)
+    db.session.commit()
+
+    flash(f"Book borrowed successfully! Return by {expected_return}", "success")
     return redirect(url_for('main.home'))
 
 @main.route('/user_dashboard')
