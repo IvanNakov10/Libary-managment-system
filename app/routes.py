@@ -1,11 +1,9 @@
 from flask import Blueprint, request, jsonify, redirect, url_for, flash, session
 from flask import render_template
 from app import db
-from app.models import Book, User, AdminUser
+from app.models import Book, User, AdminUser, BookLoan
 from flask_bcrypt import Bcrypt
 from functools import wraps
-from datetime import date
-from app.models import Book, BookLoan, User
 from datetime import date, timedelta
 
 
@@ -83,7 +81,7 @@ def books_page():
 
 
 @main.route('/register_page', methods=['GET', 'POST'])
-def register():
+def register_page():
     if request.method == 'POST':
         first_name = request.form['first_name']
         last_name = request.form['last_name']
@@ -95,7 +93,7 @@ def register():
         # Check if passwords match
         if password != confirm_password:
             flash("Passwords do not match!", "danger")
-            return redirect(url_for('main.register'))
+            return redirect(url_for('main.register_page'))
 
         # Hash the password using bcrypt
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -109,12 +107,12 @@ def register():
         flash("Registration successful!", "success")
         return redirect(url_for('main.login_page'))
 
-    return render_template('register.html')
+    return render_template('register_page.html')
 
 
 @main.route('/login_page', methods=['GET'])
 def login_page():
-    return render_template('login.html')
+    return render_template('login_page.html')
 
 @main.route('/login_page', methods=['POST'])
 def login():
@@ -244,8 +242,9 @@ def delete_book(id):
 @main.route('/logout')
 def logout():
     session.pop('user_id', None)
-    return redirect(url_for('main.login'))
-
+    session.pop('is_admin', None)
+    flash("Logged out.", "info")
+    return redirect(url_for('main.login_page'))
 
 @main.route('/book/<int:book_id>')
 def book_detail(book_id):
