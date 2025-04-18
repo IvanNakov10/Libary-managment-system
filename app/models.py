@@ -24,7 +24,9 @@ class Book(db.Model):
     genre = db.Column(db.String(100))
     availability = db.Column(db.Integer, default=1)
     publisher = db.Column(db.String(255)) 
-    year = db.Column(db.Integer)     
+    year = db.Column(db.Integer)    
+    description  = db.Column(db.Text)  
+     
 
 
 class AdminUser(db.Model):

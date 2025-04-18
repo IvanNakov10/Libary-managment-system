@@ -40,21 +40,16 @@ def home():
 
 @main.route('/books_page', methods=['GET'])
 def books_page():
-    # Get filter values from the query parameters
     genre_filter = request.args.get('genre', default='', type=str)
     publisher_filter = request.args.get('publisher', default='', type=str)
     year_filter = request.args.get('year', default='', type=str)
-    sort_order = request.args.get('sort', default='', type=str)  # Get the sorting option
+    sort_order = request.args.get('sort', default='', type=str)  
 
-    # Query distinct genres (exclude NULL values)
     genres_query = db.session.query(Book.genre).filter(Book.genre.isnot(None)).distinct().all()
-    # Convert list of tuples to a list of genre strings
     genres = [g[0] for g in genres_query if g[0]]
 
-    # Start with all books
     query = Book.query
 
-    # Apply filters
     if genre_filter:
         query = query.filter(Book.genre == genre_filter)
     if publisher_filter:
@@ -65,9 +60,8 @@ def books_page():
         except ValueError:
             pass
 
-    # Sorting logic
     if sort_order == 'availability':
-        query = query.order_by(Book.availability.desc())  # Sort by availability (descending)
+        query = query.order_by(Book.availability.desc())  
 
     books = query.all()
 
@@ -90,15 +84,12 @@ def register_page():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
-        # Check if passwords match
         if password != confirm_password:
             flash("Passwords do not match!", "danger")
             return redirect(url_for('main.register_page'))
 
-        # Hash the password using bcrypt
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        # Create user and save to database
         user = User(first_name=first_name, last_name=last_name, email=email, 
                     phone=phone, password_hash=password_hash)
         db.session.add(user)
@@ -119,14 +110,12 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
     
-    # Check regular users
     user = User.query.filter_by(email=email).first()
     if user and bcrypt.check_password_hash(user.password_hash, password):
         session['user_id'] = user.id
         session['is_admin'] = False
         return redirect(url_for('main.home'))
     
-    # Check admin users
     admin_user = AdminUser.query.filter_by(email=email).first()
     if admin_user and bcrypt.check_password_hash(admin_user.password_hash, password):
         session['user_id'] = admin_user.id
@@ -149,17 +138,16 @@ def add_book_page():
         author = request.form.get('author')
         genre = request.form.get('genre')
         availability_input = request.form.get('availability')
-        publisher = request.form.get('publisher')  # NEW
-        year_input = request.form.get('year')      # NEW
+        publisher = request.form.get('publisher')  
+        year_input = request.form.get('year')
+        description = request.form.get('description')      
 
-        # Convert availability to int
         try:
             availability = int(availability_input) if availability_input else 1
         except ValueError:
             flash("Availability must be a valid number.", "danger")
             return redirect(url_for('main.add_book_page'))
 
-        # Convert year to int
         try:
             year = int(year_input) if year_input else None
         except ValueError:
@@ -175,8 +163,9 @@ def add_book_page():
             author=author,
             genre=genre,
             availability=availability,
-            publisher=publisher,  # NEW
-            year=year             # NEW
+            publisher=publisher,  
+            year=year,
+            description=description             
         )
         try:
             db.session.add(new_book)
@@ -196,8 +185,9 @@ def edit_book_page(id):
         book.title = request.form.get('title')
         book.author = request.form.get('author')
         book.genre = request.form.get('genre')
-        publisher = request.form.get('publisher')  # NEW
-        year_input = request.form.get('year')      # NEW
+        publisher = request.form.get('publisher')  
+        year_input = request.form.get('year')
+        book.description = request.form.get('description')      
 
         availability_input = request.form.get('availability')
         try:
@@ -206,14 +196,13 @@ def edit_book_page(id):
             flash("Availability must be a valid number.", "danger")
             return redirect(url_for('main.edit_book_page', id=id))
 
-        # Convert year to int
         try:
             book.year = int(year_input) if year_input else None
         except ValueError:
             flash("Year must be a valid number.", "danger")
             return redirect(url_for('main.edit_book_page', id=id))
 
-        book.publisher = publisher  # NEW
+        book.publisher = publisher  
 
         try:
             db.session.commit()
@@ -261,28 +250,20 @@ def book_detail(book_id):
 @main.route('/books/borrow/<int:book_id>', methods=['POST'])
 def borrow_book(book_id):
     if request.method == 'GET':
-        # Optionally, you can redirect or display a confirmation page
         return redirect(url_for('main.home'))
 
-    # Check if user is logged in
     if 'user_id' not in session:
-        flash("You must be logged in to borrow books.", "danger")
         return redirect(url_for('main.login_page'))
     
-    # Get the book by id
     book = Book.query.get_or_404(book_id)
     
-    # Check if the book is available
     if book.availability <= 0:
         flash("No copies left to borrow.", "danger")
         return redirect(url_for('main.home'))
     
-    # Set the borrow date to today
     borrow_date = date.today()
-    # Set the expected return date to one week from today
     expected_return_date = borrow_date + timedelta(days=7)
     
-    # Create a new BookLoan record
     new_loan = BookLoan(
         book_id=book.id,
         user_id=session['user_id'],
@@ -292,7 +273,6 @@ def borrow_book(book_id):
     )
     db.session.add(new_loan)
     
-    # Decrement the book's availability
     book.availability -= 1
     
     try:
@@ -307,13 +287,11 @@ def borrow_book(book_id):
 @main.route('/user_dashboard')
 @login_required
 def user_dashboard():
-    # Restrict access: Only non-admin users should see this page.
     if session.get('is_admin'):
         flash("Access denied for admin users.", "danger")
         return redirect(url_for('main.home'))
     
     user_id = session.get('user_id')
-    # Retrieve active (not yet returned) loans for the current user.
     loans = BookLoan.query.filter_by(user_id=user_id, returned=False).all()
     
     return render_template('user_dashboard.html', loans=loans)
@@ -329,15 +307,12 @@ def return_book(loan_id):
         flash("Book is already returned.", "warning")
         return redirect(url_for('main.user_dashboard'))
     
-    # Mark the loan as returned and set the return date
     loan.returned = True
     loan.return_date = date.today()
     
-    # Increment the book's availability using the relationship if available
     if loan.book:
         loan.book.availability += 1
     else:
-        # Fallback: query the book directly if relationship isn't set
         book = Book.query.get(loan.book_id)
         if book:
             book.availability += 1
