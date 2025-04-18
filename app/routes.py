@@ -140,7 +140,8 @@ def add_book_page():
         availability_input = request.form.get('availability')
         publisher = request.form.get('publisher')  
         year_input = request.form.get('year')
-        description = request.form.get('description')      
+        description = request.form.get('description')
+        image_url = request.form.get('image_url') or None   
 
         try:
             availability = int(availability_input) if availability_input else 1
@@ -165,7 +166,8 @@ def add_book_page():
             availability=availability,
             publisher=publisher,  
             year=year,
-            description=description             
+            description=description,
+            image_url=image_url          
         )
         try:
             db.session.add(new_book)
@@ -188,6 +190,7 @@ def edit_book_page(id):
         publisher = request.form.get('publisher')  
         year_input = request.form.get('year')
         book.description = request.form.get('description')      
+        book.image_url = request.form.get('image_url') or None
 
         availability_input = request.form.get('availability')
         try:

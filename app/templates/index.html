@@ -15,10 +15,9 @@
           {% for book in books %}
             <div class="col-md-4">
               <div class="card mb-4">
-                <!-- Book Image (default or from book.image_filename) -->
-                <img class="card-img-top" 
-                     src="{{ url_for('static', filename='images/product-not-found.png') }}"
-                     alt="{{ book.title }}">
+                <img class="card-img-top"
+                src="{{ book.image_url or url_for('static', filename='images/default.png') }}"
+                alt="{{ book.title }}">
                 <div class="card-body">
                   <h5 class="card-title">{{ book.title }}</h5>
                   <p class="card-text">

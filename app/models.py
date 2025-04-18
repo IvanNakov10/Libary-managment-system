@@ -26,7 +26,7 @@ class Book(db.Model):
     publisher = db.Column(db.String(255)) 
     year = db.Column(db.Integer)    
     description  = db.Column(db.Text)  
-     
+    image_url    = db.Column(db.String(2083)) 
 
 
 class AdminUser(db.Model):

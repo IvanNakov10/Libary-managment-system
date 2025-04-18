@@ -15,11 +15,10 @@
           <!-- Left Column: Large Book Image -->
           <div class="col-md-3 text-center mb-4">
             <!-- Always use product-not-found.png -->
-            <img 
-              src="{{ url_for('static', filename='images/product-not-found.png') }}"
-              alt="Book Image"
-              class="img-fluid"
-              style="max-height: 450px; object-fit: cover;"
+            <img class="card-img-top img-fluid"
+                src="{{ book.image_url or url_for('static', filename='images/default.png') }}"
+                alt="{{ book.title }}"
+                style="max-height: 450px; object-fit: cover;"
             >
           </div>
     
@@ -55,13 +54,11 @@
           <div class="col-md-4">
             <h4>Latest Book</h4>
             <div class="border p-3 text-center">
-              <!-- Always use product-not-found.png here too -->
-              <img 
-                src="{{ url_for('static', filename='images/product-not-found.png') }}"
-                alt="Latest Book Image"
-                class="img-fluid mb-2"
-                style="max-height: 200px; object-fit: cover;"
-              >
+              
+              <img class="card-img-top img-fluid mb-2"
+                src="{{ book.image_url or url_for('static', filename='images/default.png') }}"
+                alt="{{ book.title }}"
+                style="max-height: 200px; object-fit: cover;">
               <h5>{{ latest_book.title }}</h5>
               <p>{{ latest_book.genre }}<br>
                  {{ latest_book.author }}</p>
