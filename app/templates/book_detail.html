@@ -51,7 +51,7 @@
             {% if latest_book %}
               <div class="border p-3 text-center">
                 <img class="card-img-top img-fluid mb-2"
-                     src="{{ latest_book.image_url or url_for('static', filename='images/default.png') }}"
+                     src="{{ latest_book.image_url or url_for('static', filename='images/images.png') }}"
                      alt="{{ latest_book.title }}"
                      style="max-height: 200px; object-fit: cover;">
                 <h5>{{ latest_book.title }}</h5>

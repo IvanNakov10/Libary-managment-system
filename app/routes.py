@@ -40,16 +40,30 @@ def home():
 
 @main.route('/books_page', methods=['GET'])
 def books_page():
-    genre_filter = request.args.get('genre', default='', type=str)
-    publisher_filter = request.args.get('publisher', default='', type=str)
-    year_filter = request.args.get('year', default='', type=str)
-    sort_order = request.args.get('sort', default='', type=str)  
+    q                = request.args.get('q', '', type=str)
+    genre_filter     = request.args.get('genre', '', type=str)
+    publisher_filter = request.args.get('publisher', '', type=str)
+    year_filter      = request.args.get('year', '', type=str)
+    sort_order       = request.args.get('sort', '', type=str)
 
-    genres_query = db.session.query(Book.genre).filter(Book.genre.isnot(None)).distinct().all()
+    # Fetch distinct genres for the dropdown
+    genres_query = (
+        db.session
+          .query(Book.genre)
+          .filter(Book.genre.isnot(None))
+          .distinct()
+          .all()
+    )
     genres = [g[0] for g in genres_query if g[0]]
 
+    # Build base query
     query = Book.query
 
+    # Title-only search
+    if q:
+        query = query.filter(Book.title.ilike(f"%{q}%"))
+
+    # Existing filters
     if genre_filter:
         query = query.filter(Book.genre == genre_filter)
     if publisher_filter:
@@ -60,18 +74,20 @@ def books_page():
         except ValueError:
             pass
 
+    # Sort by availability if requested
     if sort_order == 'availability':
-        query = query.order_by(Book.availability.desc())  
+        query = query.order_by(Book.availability.desc())
 
     books = query.all()
 
     return render_template('books.html',
                            books=books,
                            genres=genres,
+                           q=q,
                            genre_filter=genre_filter,
                            publisher_filter=publisher_filter,
                            year_filter=year_filter,
-                           sort_order=sort_order) 
+                           sort_order=sort_order)
 
 
 @main.route('/register_page', methods=['GET', 'POST'])
@@ -130,7 +146,10 @@ def login():
 @admin_required
 def dashboard():
     books = Book.query.all()
-    return render_template('dashboard.html', books=books)
+    loans = BookLoan.query.filter_by(returned=False).all()
+    return render_template('dashboard.html',
+                           books=books,
+                           loans=loans)
 @main.route('/books/add', methods=['GET', 'POST'])
 def add_book_page():
     if request.method == 'POST':

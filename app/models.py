@@ -1,58 +1,70 @@
 from app import db
 from flask_bcrypt import generate_password_hash
-
 from datetime import date
-
-
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    phone = db.Column(db.String(20))
-    password_hash = db.Column(db.String(255), nullable=False)
+    id                = db.Column(db.Integer,   primary_key=True, autoincrement=True)
+    first_name        = db.Column(db.String(100), nullable=False)
+    last_name         = db.Column(db.String(100), nullable=False)
+    email             = db.Column(db.String(255), unique=True, nullable=False)
+    phone             = db.Column(db.String(20))
+    password_hash     = db.Column(db.String(255), nullable=False)
     registration_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
 
+    # One-to-many: a user can have many loans
+    loans             = db.relationship(
+                            'BookLoan',
+                            back_populates='user',
+                            cascade='all, delete-orphan'
+                        )
 
 class Book(db.Model):
     __tablename__ = 'books'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(255), nullable=False)
-    author = db.Column(db.String(255), nullable=False)
-    genre = db.Column(db.String(100))
-    availability = db.Column(db.Integer, default=1)
-    publisher = db.Column(db.String(255)) 
-    year = db.Column(db.Integer)    
-    description  = db.Column(db.Text)  
-    image_url    = db.Column(db.String(2083)) 
+    id           = db.Column(db.Integer,   primary_key=True, autoincrement=True)
+    title        = db.Column(db.String(255), nullable=False)
+    author       = db.Column(db.String(255), nullable=False)
+    genre        = db.Column(db.String(100))
+    availability = db.Column(db.Integer,   default=1)
+    publisher    = db.Column(db.String(255))
+    year         = db.Column(db.Integer)
+    description  = db.Column(db.Text)
+    image_url    = db.Column(db.String(2083))
 
+    # One-to-many: a book can have many loans
+    loans        = db.relationship(
+                      'BookLoan',
+                      back_populates='book',
+                      cascade='all, delete-orphan'
+                   )
 
 class AdminUser(db.Model):
     __tablename__ = 'admin_users'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
+    id            = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username      = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
+    email         = db.Column(db.String(255), unique=True, nullable=False)
 
 class Log(db.Model):
     __tablename__ = 'logs'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    admin_id = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)
-    action = db.Column(db.Text, nullable=False)
+    id        = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id   = db.Column(db.Integer, db.ForeignKey('users.id'),       nullable=True)
+    admin_id  = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)
+    action    = db.Column(db.Text,    nullable=False)
     timestamp = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
-#flask db migrate -m "Added new fields"
-#flask db upgrade
+
+    user      = db.relationship('User',      foreign_keys=[user_id])
+    admin     = db.relationship('AdminUser', foreign_keys=[admin_id])
+
 class BookLoan(db.Model):
     __tablename__ = 'book_loans'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    book_id = db.Column(db.Integer, db.ForeignKey('books.id', ondelete='CASCADE'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    borrow_date = db.Column(db.Date, nullable=False)
-    return_date = db.Column(db.Date, nullable=True)
-    returned = db.Column(db.Boolean, default=False)
-    
-    book = db.relationship('Book', backref='loans', lazy=True)
-    user = db.relationship('User', backref='loans', lazy=True)
+    id           = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    book_id      = db.Column(db.Integer, db.ForeignKey('books.id', ondelete='CASCADE'), nullable=False)
+    user_id      = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    borrow_date  = db.Column(db.Date,    nullable=False)
+    return_date  = db.Column(db.Date,    nullable=True)
+    returned     = db.Column(db.Boolean, default=False)
+
+    # Both sides use back_populates — no backref here
+    book         = db.relationship('Book', back_populates='loans')
+    user         = db.relationship('User', back_populates='loans')
