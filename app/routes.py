@@ -127,10 +127,13 @@ def login():
     password = request.form.get('password')
     
     user = User.query.filter_by(email=email).first()
+    
     if user and bcrypt.check_password_hash(user.password_hash, password):
         session['user_id'] = user.id
         session['is_admin'] = False
         return redirect(url_for('main.home'))
+    
+  
     
     admin_user = AdminUser.query.filter_by(email=email).first()
     if admin_user and bcrypt.check_password_hash(admin_user.password_hash, password):

@@ -31,6 +31,20 @@
 
     <div class="container">
         <div class="login-container bg-white">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div>
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
             <h2 class="form-title">Login</h2>
             <form action="{{ url_for('main.login_page') }}" method="POST">
                 <div class="form-group">
